@@ -5,7 +5,7 @@ import PokePhoto from "./pokePhoto";
 
 export default function PokeCard({pokemon}) {
   return (
-    <div className="col-xs-6 p-0 m-2 shadow mb-4 bg-while rounded" style={{minWidth:"250px"}}>
+    <div className="col p-0 m-2 shadow mb-4 bg-while rounded" style={{minWidth:"250px", maxWidth:"250px"}}>
       <PokeName name={pokemon?.name} number={pokemon?.id} type={pokemon?.types}/>
       <PokePhoto url={pokemon?.sprites.other}/>
       <div className="text-center">
