@@ -1,4 +1,4 @@
-import icon from "../../../../assets/iconType/icons/pokemon_type_grass.svg";
+//import icon from "../../../../assets/iconType/icons/pokemon_type_grass.svg";
 //import "./index.css"
 export default function PokeType() {
   return (

@@ -1,11 +1,11 @@
 
 import './App.css';
-import Home from './views/home';
+import Routes from './routes';
 
 function App() {
   return (
     <>
-      <Home/>
+      <Routes/>
     </>
   );
 }

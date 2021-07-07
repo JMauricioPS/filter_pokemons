@@ -9,7 +9,6 @@ const usePokemonStore = create((set, get) => ({
   errorMessage: "",
   isLoading: false,
   isSearch: false,
-  //isLoading: false,
   /* getTypes: async ()=>{
         try {
             const typeResults = await callApi({url: "https://pokeapi.co/api/v2/pokemon?limit=200"})
@@ -33,38 +32,34 @@ const usePokemonStore = create((set, get) => ({
         results.push(pokemon);
       }
       //console.log(results);
-      //console.log(pokemonResults.results);
       set({ pokemons: results });
     } catch (error) {
-      console.log(error);
-      set({ hasError: true, errorMessage: error, pokemons: [] });
+      //console.log(error);
+      set({ hasError: true, errorMessage: "Se produjo un error", pokemons: [] });
     } finally {
       set({ isLoading: false });
     }
   },
   filterPokemons: (name) => {
-    if (name) {
+   
       if (get().pokemons?.length) {
         const results = get().pokemons.filter((pokemon) => {
-          if (pokemon.name.includes(name.toLowerCase())) {
-            return pokemon;
-          }
+           return pokemon.name.includes(name.toLowerCase())
         });
-        set({ isSearch: true });
-        //setIsSearch(true);
+        //console.log(results);
+        set({ isSearch: true, text: name });
         //console.log(filteredPokemons);
         set({ filteredPokemons: results });
-        //setResults(filteredPokemons: results);
       }
-    } else {
-      console.log("no has ingresado texto");
-      set({ isSearch: false });
-      //setIsSearch(false);
-    }
+    
   },
   deleteSearch: () => {
-    set({ isSearch: false });
+    set({ isSearch: false, filteredPokemons: [], text:"" });
   },
+  search:(textSearch)=>{
+    set({test: textSearch});
+  },
+  text:"",
 }));
 
 export default usePokemonStore;

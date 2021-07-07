@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import setType from "../../../../../assets/iconType/setType";
 import PokeName from "./pokeName";
 import PokePhoto from "./pokePhoto";
@@ -19,9 +19,9 @@ export default function PokeCard({pokemon}) {
         }
       </div>
       <div className="text-center mt-2 mb-3">
-        <button type="button" className="btn btn-outline-secondary">
+        <Link to={`/pokemon/${pokemon?.id}`} className="btn btn-outline-secondary">
           See Details
-        </button>
+        </Link>
       </div>
     </div>
   );
