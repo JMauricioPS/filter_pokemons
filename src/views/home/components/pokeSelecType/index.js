@@ -1,68 +1,83 @@
-//import icon from "../../../../assets/iconType/icons/pokemon_type_grass.svg";
-//import "./index.css"
-export default function PokeType() {
+import { useEffect, useState } from "react";
+import iconType from "../../../../assets/iconType/setType";
+import CardSelect from "./components/cardSelect";
+import "./style.css";
+
+export default function PokeType({ types, filter, onDelete, activeFilter }) {
+  const [isClick, setIsClick] = useState(false);
+  const [selectType, setSelectType] = useState(activeFilter);
+
+  useEffect(() => {
+    setSelectType(activeFilter);
+  }, [activeFilter]);
+
+  const changeActiveType = (type) => {
+    setIsClick(!isClick);
+    setSelectType(type);
+    filter(type);
+  };
+
+  const selectBoxActive = (e) => {
+    if (e.currentTarget === e.target) {
+      console.log("contenedor padre");
+      setIsClick(!isClick);
+      console.log(e);
+    }
+  };
+
+  const removeSelection = () => {
+    setIsClick(!isClick);
+    onDelete();
+    setSelectType("");
+  };
+
   return (
-    <div
-      className="container-fluid d-flex align-items-center bg-info"
-      style={{ height: "40px" }}
-    >
-      {/* <div className="mx-3 bg-warning">Filter by:</div>
-      <div className="h-100 bg-danger">
-        <form style={{height:"100%"}}>
-          <div className="selectbox">
-          <div class="select" id="select">
-              <div class="contenido-select">
-                <p class="titulo">Select type</p>
-              </div>
-              <i class="bi bi-caret-down-fill"></i>
+    <div className="container-fluid">
+      <p className="text-black-50 border-bottom mb-0">Filter by</p>
+      <form>
+        <div className="ps-selectbox bg-white">
+          <div
+            onClick={selectBoxActive}
+            className={`ps-select px-auto ${isClick && "active"}`}
+          >
+            <div className="ps-contenido-select mx-auto">
+              {selectType.length ? (
+                <div className="ps-contenido-opcion">
+                  <img
+                    src={iconType[selectType.toLocaleLowerCase()]}
+                    alt="icon"
+                  />
+                  <p className="text-black-50 my-auto text-capitalize">
+                    {selectType}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-black-50 my-auto">Pick up</p>
+              )}
             </div>
-            <div class="opciones" id="opciones">
-              <a href="#" class="opcion">
-                <div class="contenido-opcion">
-                  <img src={icon} alt="" />
-                  <div class="textos">
-                    <h1 class="titulo">Mexico</h1>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="opcion">
-                <div class="contenido-opcion">
-                  <img src={icon} alt="" />
-                  <div class="textos">
-                    <h1 class="titulo">Mexico</h1>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="opcion">
-                <div class="contenido-opcion">
-                  <img src={icon} alt="" />
-                  <div class="textos">
-                    <h1 class="titulo">Mexico</h1>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="opcion">
-                <div class="contenido-opcion">
-                  <img src={icon} alt="" />
-                  <div class="textos">
-                    <h1 class="titulo">Mexico</h1>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="opcion">
-                <div class="contenido-opcion">
-                  <img src={icon} alt="" />
-                  <div class="textos">
-                    <h1 class="titulo">Mexico</h1>
-                  </div>
-                </div>
-              </a>
-              
-            </div>
+            <i className="fas fa-angle-down my-auto"></i>
           </div>
-        </form>
-      </div>
- */}
+          <div className={`ps-opciones ${isClick && "active"}`}>
+            <div className="opcion" onClick={removeSelection}>
+              <div className="ps-contenido-opcion none">
+                <p className="text-black-50 my-auto mx-auto text-capitalize">
+                  Neither
+                </p>
+              </div>
+            </div>
+            {types?.map((type, index) => {
+              return (
+                <CardSelect
+                  setActive={changeActiveType}
+                  key={index}
+                  name={type.name}
+                  icon={iconType[type.name]}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

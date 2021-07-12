@@ -9,16 +9,20 @@ const usePokemonStore = create((set, get) => ({
   errorMessage: "",
   isLoading: false,
   isSearch: false,
-  /* getTypes: async ()=>{
-        try {
-            const typeResults = await callApi({url: "https://pokeapi.co/api/v2/pokemon?limit=200"})
-            /* console.log(pokemonResults.results);*
-            set({typesPokemons: typeResults.results});
-        } catch (error) {
-            console.log(error);
-            set({typePokemons: []})
-        }
-    }, */
+  text: "",
+  textType: "",
+  getTypes: async () => {
+    try {
+      const typeResults = await callApi({
+        url: "https://pokeapi.co/api/v2/type",
+      });
+      //console.log(typeResults.results);
+      set({ typePokemons: typeResults.results });
+    } catch (error) {
+      console.log(error);
+      set({ typePokemons: [] });
+    }
+  },
   getPokemons: async () => {
     const results = [];
     try {
@@ -35,31 +39,54 @@ const usePokemonStore = create((set, get) => ({
       set({ pokemons: results });
     } catch (error) {
       //console.log(error);
-      set({ hasError: true, errorMessage: "Se produjo un error", pokemons: [] });
+      set({
+        hasError: true,
+        errorMessage: "Se produjo un error",
+        pokemons: [],
+      });
     } finally {
       set({ isLoading: false });
     }
   },
   filterPokemons: (name) => {
-   
-      if (get().pokemons?.length) {
-        const results = get().pokemons.filter((pokemon) => {
-           return pokemon.name.includes(name.toLowerCase())
-        });
-        //console.log(results);
-        set({ isSearch: true, text: name });
-        //console.log(filteredPokemons);
-        set({ filteredPokemons: results });
-      }
-    
+    if (get().pokemons?.length) {
+      const results = get().pokemons.filter((pokemon) => {
+        return pokemon.name.includes(name.toLowerCase());
+      });
+      //console.log(results);
+      set({
+        filteredPokemons: results,
+        isSearch: true,
+        text: name,
+        textType: "",
+      });
+      //console.log(filteredPokemons);
+    }
+  },
+  filterByType: (type) => {
+    if (get().pokemons?.length) {
+      // eslint-disable-next-line array-callback-return
+      const results = get().pokemons.filter((pokemon) => {
+        for (const iterator of pokemon.types) {
+          //console.log(iterator.type.name);
+          if (iterator.type.name === type.toLowerCase()) {
+            return pokemon;
+          }
+        }
+      });
+      //console.log(results);
+      set({
+        filteredPokemons: results,
+        isSearch: true,
+        textType: type.toLowerCase(),
+        text: "",
+      });
+      //console.log(filteredPokemons);
+    }
   },
   deleteSearch: () => {
-    set({ isSearch: false, filteredPokemons: [], text:"" });
+    set({ isSearch: false, filteredPokemons: [], text: "", textType: "" });
   },
-  search:(textSearch)=>{
-    set({test: textSearch});
-  },
-  text:"",
 }));
 
 export default usePokemonStore;

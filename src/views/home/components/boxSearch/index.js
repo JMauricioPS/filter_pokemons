@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../../../../assets/iconLogo/pokeball.svg";
 
-export default function BoxSearch({onSearch, onDelete, searching}) {
-  const [textSearch,setTextSearch] = useState(searching);
-  
+export default function BoxSearch({ onSearch, onDelete, searching }) {
+  const [textSearch, setTextSearch] = useState(searching);
+
+  useEffect(() => {
+    setTextSearch(searching);
+  }, [searching]);
+
   return (
     <header className="navbar navbar-light">
       <div className="container-fluid">
@@ -25,12 +29,25 @@ export default function BoxSearch({onSearch, onDelete, searching}) {
             placeholder="Search"
             aria-label="Search"
             value={textSearch}
-            onChange={({target:{value}})=> setTextSearch(value)}
+            onChange={({ target: { value } }) => setTextSearch(value)}
           />
-          <button className="btn btn-outline-primary me-1" type="submit" hidden={!textSearch.length } onClick={()=>onSearch(textSearch)} >
+          <button
+            className="btn btn-outline-primary me-1"
+            type="submit"
+            hidden={!textSearch.length}
+            onClick={() => onSearch(textSearch)}
+          >
             Search
           </button>
-          <button className="btn btn-outline-danger" type="submit" hidden={!textSearch.length} onClick={()=>{setTextSearch(""); onDelete();}} >
+          <button
+            className="btn btn-outline-danger"
+            type="submit"
+            hidden={!textSearch.length}
+            onClick={() => {
+              setTextSearch("");
+              onDelete();
+            }}
+          >
             Borrar
           </button>
         </div>
