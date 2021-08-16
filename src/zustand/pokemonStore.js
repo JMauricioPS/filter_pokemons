@@ -5,8 +5,6 @@ const usePokemonStore = create((set, get) => ({
   pokemons: [],
   typePokemons: [],
   filteredPokemons: [],
-  hasError: false,
-  errorMessage: "",
   isLoading: false,
   isSearch: false,
   text: "",
@@ -16,7 +14,6 @@ const usePokemonStore = create((set, get) => ({
       const typeResults = await callApi({
         url: "https://pokeapi.co/api/v2/type",
       });
-      //console.log(typeResults.results);
       set({ typePokemons: typeResults.results });
     } catch (error) {
       console.log(error);
@@ -31,19 +28,12 @@ const usePokemonStore = create((set, get) => ({
         url: "https://pokeapi.co/api/v2/pokemon?limit=12",
       });
       for (const { url } of pokemonResults.results) {
-        //console.log(url)
         const pokemon = await callApi({ url: url });
         results.push(pokemon);
       }
-      //console.log(results);
       set({ pokemons: results });
     } catch (error) {
-      //console.log(error);
-      set({
-        hasError: true,
-        errorMessage: "Se produjo un error",
-        pokemons: [],
-      });
+      set({ pokemons: [] });
     } finally {
       set({ isLoading: false });
     }
@@ -53,14 +43,13 @@ const usePokemonStore = create((set, get) => ({
       const results = get().pokemons.filter((pokemon) => {
         return pokemon.name.includes(name.toLowerCase());
       });
-      //console.log(results);
+
       set({
         filteredPokemons: results,
         isSearch: true,
         text: name,
         textType: "",
       });
-      //console.log(filteredPokemons);
     }
   },
   filterByType: (type) => {
@@ -68,20 +57,19 @@ const usePokemonStore = create((set, get) => ({
       // eslint-disable-next-line array-callback-return
       const results = get().pokemons.filter((pokemon) => {
         for (const iterator of pokemon.types) {
-          //console.log(iterator.type.name);
+          /*  return pokemon && iterator.type.name === type.toLowerCase(); */
           if (iterator.type.name === type.toLowerCase()) {
             return pokemon;
           }
         }
       });
-      //console.log(results);
+
       set({
         filteredPokemons: results,
         isSearch: true,
         textType: type.toLowerCase(),
         text: "",
       });
-      //console.log(filteredPokemons);
     }
   },
   deleteSearch: () => {

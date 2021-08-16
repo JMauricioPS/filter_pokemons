@@ -2,7 +2,10 @@ export default function CardSelect({ name, icon, setActive }) {
   return (
     <div
       className="opcion"
-      onClick={(e) => setActive(e.currentTarget.innerText)}
+      onClick={(e) => {
+        setActive(e.currentTarget.innerText);
+        console.log(e.currentTarget.innerText);
+      }}
     >
       <div className="ps-contenido-opcion">
         <img src={icon} alt="icon" />

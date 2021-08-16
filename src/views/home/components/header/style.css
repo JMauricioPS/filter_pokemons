@@ -16,6 +16,7 @@ div.ps-select {
   margin-bottom: 20px;
   position: relative;
   z-index: 200;
+  border: 1px solid #a3a3a3;
 }
 
 div.ps-select.active,

@@ -1,70 +1,44 @@
 import { useEffect } from "react";
-
 import usePokemonStore from "../../zustand/pokemonStore";
 import shallow from "zustand/shallow";
-
 import Loading from "../../components/Loading";
-import BoxSearch from "./components/boxSearch";
-import PokeType from "./components/pokeSelecType";
 import PokemonList from "./components/pokeContainer";
+import Header from "./components/header";
+import Footer from "./components/footer";
 
 export default function Home() {
-  const {
-    getPokemons,
-    pokemons,
-    getTypes,
-    typePokemons,
-    isLoading,
-    filterPokemons,
-    filteredPokemons,
-    filterByType,
-    isSearch,
-    deleteSearch,
-    text,
-    textType,
-  } = usePokemonStore(
-    (state) => ({
-      getPokemons: state.getPokemons,
-      pokemons: state.pokemons,
-      getTypes: state.getTypes,
-      typePokemons: state.typePokemons,
-      isLoading: state.isLoading,
-      filterPokemons: state.filterPokemons,
-      filterByType: state.filterByType,
-      filteredPokemons: state.filteredPokemons,
-      isSearch: state.isSearch,
-      deleteSearch: state.deleteSearch,
-      text: state.text,
-      textType: state.textType,
-    }),
-    shallow
-  );
+  const { getPokemons, pokemons, filteredPokemons, isLoading, isSearch } =
+    usePokemonStore(
+      (state) => ({
+        getPokemons: state.getPokemons,
+        pokemons: state.pokemons,
+        filteredPokemons: state.filteredPokemons,
+        isLoading: state.isLoading,
+        isSearch: state.isSearch,
+      }),
+      shallow
+    );
 
   useEffect(() => {
-    getTypes();
     getPokemons();
-  }, [getPokemons, getTypes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //console.log(pokemons);
-  //console.log(typePokemons);
+
   return (
-    <div className="container">
-      <BoxSearch
-        onSearch={filterPokemons}
-        onDelete={deleteSearch}
-        searching={text}
-      />
-      <PokeType
-        types={typePokemons}
-        filter={filterByType}
-        onDelete={deleteSearch}
-        activeFilter={textType}
-      />
-      {isLoading ? (
-        <Loading title="loading results..." />
-      ) : (
-        <PokemonList pokemons={isSearch ? filteredPokemons : pokemons} />
-      )}
+    <div className="container_fluid">
+      <Header />
+      <div className="container-fluid px-0">
+        <div className="container">
+          {isLoading ? (
+            <Loading title="loading results..." />
+          ) : (
+            <PokemonList pokemons={isSearch ? filteredPokemons : pokemons} />
+          )}
+        </div>
+        <Footer isSearch={isSearch} len={filteredPokemons.length} />
+      </div>
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import iconType from "../../../../assets/iconType/setType";
-import CardSelect from "./components/cardSelect";
-import "./style.css";
+import { useState, useEffect } from "react";
+import CardType from "./cardType";
+import iconType from "../../../../../assets/iconType/setType";
+import "../style.css";
 
-export default function PokeType({ types, filter, onDelete, activeFilter }) {
+export default function TypePokemon({ types, filter, onDelete, activeFilter }) {
   const [isClick, setIsClick] = useState(false);
   const [selectType, setSelectType] = useState(activeFilter);
 
@@ -31,9 +31,11 @@ export default function PokeType({ types, filter, onDelete, activeFilter }) {
     setSelectType("");
   };
 
+  console.log("me renderize - typePokemon");
+  // console.log(types);
+
   return (
-    <div className="container-fluid">
-      <p className="text-black-50 border-bottom mb-0">Filter by</p>
+    <div className="d-flex justify-content-start justify-content-md-end col-12 col-md-4 my-2  ">
       <form>
         <div className="ps-selectbox bg-white">
           <div
@@ -67,7 +69,7 @@ export default function PokeType({ types, filter, onDelete, activeFilter }) {
             </div>
             {types?.map((type, index) => {
               return (
-                <CardSelect
+                <CardType
                   setActive={changeActiveType}
                   key={index}
                   name={type.name}
@@ -81,3 +83,6 @@ export default function PokeType({ types, filter, onDelete, activeFilter }) {
     </div>
   );
 }
+/**
+ * d-flex justify-content-end col-sm-4
+ */
